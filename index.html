@@ -22,7 +22,7 @@
   --bg:#EDEFEA; --surface:#FBFCF9; --surface2:#E4E7E0; --surface3:#F2F4EF; --ink:#161B24; --muted:#59616F; --faint:#858C97;
   --line:#D6DAD2; --line2:#BFC5BA;
   --accent:#2940C4; --accent-ink:#FFFFFF; --accent-soft:#E2E6FA; --danger:#B42318;
-  --s-ativa:#16834F; --s-testada:#7248BD; --s-andamento:#A86200; --s-projeto:#1F72A6; --s-segundo:#747A84;
+  --s-ativa:#16834F; --s-testada:#7248BD; --s-andamento:#A86200; --s-projeto:#1F72A6; --s-segundo:#1F72A6; --s-desativada:#747A84;
   --viz-lucro:#2a78d6; --viz-anuncio:#eb6834; --good:#16834F; --bad:#B42318;
   --scrim:rgba(14,18,26,.36);
   --shadow:0 1px 0 rgba(22,27,36,.04), 0 8px 24px -14px rgba(22,27,36,.22);
@@ -36,7 +36,7 @@
     --bg:#0E1116; --surface:#171B22; --surface2:#12151B; --surface3:#1D222B; --ink:#E7EAEE; --muted:#9AA2AE; --faint:#6E7682;
     --line:#272D37; --line2:#3A424F;
     --accent:#8C9DFF; --accent-ink:#0E1116; --accent-soft:#1F2647; --danger:#FF7B6C;
-    --s-ativa:#3CC585; --s-testada:#AC8FF2; --s-andamento:#EFA33A; --s-projeto:#5DB3E8; --s-segundo:#9CA2AC;
+    --s-ativa:#3CC585; --s-testada:#AC8FF2; --s-andamento:#EFA33A; --s-projeto:#5DB3E8; --s-segundo:#5DB3E8; --s-desativada:#9CA2AC;
     --viz-lucro:#3987e5; --viz-anuncio:#d95926; --good:#3CC585; --bad:#FF7B6C;
     --scrim:rgba(0,0,0,.55);
     --shadow:0 1px 0 rgba(0,0,0,.3), 0 10px 30px -14px rgba(0,0,0,.7);
@@ -47,7 +47,7 @@
   --bg:#0E1116; --surface:#171B22; --surface2:#12151B; --surface3:#1D222B; --ink:#E7EAEE; --muted:#9AA2AE; --faint:#6E7682;
   --line:#272D37; --line2:#3A424F;
   --accent:#8C9DFF; --accent-ink:#0E1116; --accent-soft:#1F2647; --danger:#FF7B6C;
-  --s-ativa:#3CC585; --s-testada:#AC8FF2; --s-andamento:#EFA33A; --s-projeto:#5DB3E8; --s-segundo:#9CA2AC;
+  --s-ativa:#3CC585; --s-testada:#AC8FF2; --s-andamento:#EFA33A; --s-projeto:#5DB3E8; --s-segundo:#5DB3E8; --s-desativada:#9CA2AC;
   --viz-lucro:#3987e5; --viz-anuncio:#d95926; --good:#3CC585; --bad:#FF7B6C;
   --scrim:rgba(0,0,0,.55);
   --shadow:0 1px 0 rgba(0,0,0,.3), 0 10px 30px -14px rgba(0,0,0,.7);
@@ -562,7 +562,7 @@ kbd{font:11px var(--f-mono);border:1px solid var(--line2);border-bottom-width:2p
     <div class="auth-logo"><span class="mark" aria-hidden="true"></span>Cofre de Ofertas</div>
     <div>
       <h1>Suas ofertas e os números de cada mês.</h1>
-      <p>O que está no ar, o que já foi testado, o que ainda é projeto — e as ideias que ainda não viraram produto.</p>
+      <p>O que está no ar, o que saiu do ar, o que ainda está sendo montado — e as ideias que ainda não viraram produto.</p>
     </div>
     <div class="ticket-demo" aria-hidden="true">
       <div class="tm"><small>Crochê</small><b>Carteiras em Crochê</b><small>Lucro no mês · R$ 2.951</small></div>
@@ -682,12 +682,12 @@ const SUPABASE_URL = "https://dxybmayffxvepmwbyezc.supabase.co";
 const SUPABASE_KEY = "sb_publishable_XOGDcw4BfszsaE_zwWy8tA_cNPYZZ0s";
 
 const STATUS = [
-  { k:"ativa",     label:"Ativa",         grupo:"Ativas",        hint:"No ar e vendendo agora" },
-  { k:"testada",   label:"Testada",       grupo:"Testadas",      hint:"Já rodou — tem resultado pra consultar" },
-  { k:"andamento", label:"Em andamento",  grupo:"Em andamento",  hint:"Montando produto, página e criativos" },
-  { k:"projeto",   label:"Em projeto",    grupo:"Em projeto",    hint:"Ainda no papel" },
-  { k:"segundo",   label:"Segundo plano", grupo:"Segundo plano", hint:"Pausada, fica pra depois" },
+  { k:"ativa",      label:"Ativa",         grupo:"Ativas",        hint:"No ar e vendendo agora" },
+  { k:"desativada", label:"Desativada",    grupo:"Desativadas",   hint:"Saiu do ar — o resultado fica guardado pra consulta" },
+  { k:"andamento",  label:"Em andamento",  grupo:"Em andamento",  hint:"Montando produto, página e criativos" },
+  { k:"segundo",    label:"Segundo plano", grupo:"Segundo plano", hint:"Pausada, fica pra depois" },
 ];
+const LEGADO = { testada:"desativada", projeto:"andamento" };
 const ST = Object.fromEntries(STATUS.map(s => [s.k, s]));
 const SUGESTOES = ["Investimento","Faturamento","Vendas","ROAS","CPA","CTR","Conversão da página","Ticket médio","Order bump","Reembolsos"];
 const LINKS = [
@@ -704,7 +704,7 @@ const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 
 const agora = () => new Date().toISOString();
 const norm = s => String(s ?? "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
 const semId = o => { const { id, ...r } = o; return r; };
-const statusDe = o => ST[o.status] ? o.status : "projeto";
+const statusDe = o => ST[o.status] ? o.status : (LEGADO[o.status] || "andamento");
 const store = {
   get(k){ try { return localStorage.getItem(k); } catch { return null; } },
   set(k, v){ try { localStorage.setItem(k, v); } catch {} },
@@ -1102,7 +1102,7 @@ function irPara(tab, f){
 }
 function acaoPrincipal(){
   if (aba === "ideias") { window.scrollTo({ top:0, behavior:"smooth" }); $("#c-titulo").focus(); }
-  else novaOferta(aba === "ofertas" ? filtro : "projeto");
+  else novaOferta(aba === "ofertas" ? filtro : "andamento");
 }
 function abrirSheet(){ $("#sheet").hidden = false; $("#scrim").hidden = false; }
 function fecharSheet(){ if ($("#sheet").hidden) return; $("#sheet").hidden = true; if (!edit) $("#scrim").hidden = true; }
@@ -1115,7 +1115,7 @@ document.addEventListener("click", e => {
     if (a === "sair") { sair(); return; }
     if (a === "recarregar") { erroCarga = false; ultimoErro = null; renderTudo(); carregar(); return; }
     if (a === "conta") { abrirSheet(); return; }
-    if (a === "nova") { novaOferta(acao.dataset.status || (aba === "ofertas" ? filtro : "projeto")); return; }
+    if (a === "nova") { novaOferta(acao.dataset.status || (aba === "ofertas" ? filtro : "andamento")); return; }
     if (a === "ver-ofertas") { irPara("ofertas", acao.dataset.filtro || "todas"); return; }
   }
   const n = t.closest(".nav-item, .bb-item[data-tab]");
@@ -1408,10 +1408,9 @@ function renderInicio(){
     </div>`;
   }
 
-  const outras = ["testada", "andamento", "projeto", "segundo"].map(k => {
+  const outras = ["desativada", "andamento", "segundo"].map(k => {
     const s = ST[k];
     const itens = ofertas.filter(o => statusDe(o) === k).sort((a, b) => String(b.atualizadoEm).localeCompare(String(a.atualizadoEm)));
-    if (k === "segundo" && !itens.length) return "";
     return `
     <section class="secao" style="--st:var(--s-${k})">
       <div class="secao-h"><h2><i></i>${esc(s.grupo)}</h2><span class="n">${itens.length}</span><span class="h">${esc(s.hint)}</span>
@@ -1533,10 +1532,10 @@ function paraEdicao(o){
   d.videos = Array.isArray(d.videos) ? d.videos.map(v => ({ titulo:v.titulo || "", url:v.url || "" })) : [];
   d.dados = Array.isArray(d.dados) ? d.dados.map(x => ({ rotulo:x.rotulo || "", valor:x.valor || "" })) : [];
   d.mensal = Array.isArray(d.mensal) ? d.mensal.map(m => ({ mes:m.mes || "", faturamento:num(m.faturamento), investimento:num(m.investimento), vendas:num(m.vendas) })) : [];
-  return { ...vazia("projeto"), ...d };
+  return { ...vazia("andamento"), ...d };
 }
 function abrirOferta(id){ const o = S.ofertas.get(id); if (o) mostrarDrawer({ id, data:paraEdicao(o) }); }
-function novaOferta(status){ mostrarDrawer({ id:uid(), data:vazia(ST[status] ? status : "projeto") }); }
+function novaOferta(status){ mostrarDrawer({ id:uid(), data:vazia(ST[status] ? status : (LEGADO[status] || "andamento")) }); }
 function mostrarDrawer(e){
   fecharSheet(); esconderTip();
   if (!edit) focoAntes = document.activeElement;
@@ -1690,7 +1689,7 @@ function voltarParaRascunho(){
   if (alvo) salvar("ideias", alvo.id, { ...semId(alvo), titulo, texto, virouOferta:null }, 0);
   else salvar("ideias", uid(), { titulo, texto, fixada:false }, 0);
   apagar("ofertas", id);
-  edit.data = vazia("projeto"); edit.id = "__apagada";
+  edit.data = vazia("andamento"); edit.id = "__apagada";
   fecharDrawer();
   irPara("ideias");
   toast((titulo || "A oferta") + " voltou para as ideias");
@@ -1800,7 +1799,7 @@ dr.addEventListener("click", e => {
       const id = edit.id;
       apagar("ofertas", id);
       for (const n of S.ideias.values()) if (n.virouOferta === id) salvar("ideias", n.id, { ...semId(n), virouOferta:null }, 0);
-      edit.data = vazia("projeto"); edit.id = "__apagada";
+      edit.data = vazia("andamento"); edit.id = "__apagada";
       fecharDrawer();
     }
   }
@@ -1897,7 +1896,7 @@ $("#notas").addEventListener("click", e => {
     const texto = String(n.texto || "").trim();
     const nome = (n.titulo || "").trim() || (texto.split("\n").find(l => l.trim()) || "").trim();
     const oid = uid();
-    salvar("ofertas", oid, { ...vazia("projeto"), nome:nome.slice(0, 90), info:texto, origemIdeia:id }, 0);
+    salvar("ofertas", oid, { ...vazia("andamento"), nome:nome.slice(0, 90), info:texto, origemIdeia:id }, 0);
     salvar("ideias", id, { ...semId(n), virouOferta:oid }, 0);
     renderNotas();
     abrirOferta(oid);

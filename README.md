@@ -1,7 +1,7 @@
 # Cofre de Ofertas
 
-Webapp instalável (PWA) para cadastrar ofertas de low ticket por situação — **Ativa, Testada,
-Em andamento, Em projeto e Segundo plano** — com relatório mensal de faturamento, lucro e
+Webapp instalável (PWA) para cadastrar ofertas de low ticket por situação — **Ativa, Desativada,
+Em andamento e Segundo plano** — com relatório mensal de faturamento, lucro e
 gasto em anúncios, e um bloco de notas para ideias soltas.
 
 ## Telas
@@ -10,10 +10,10 @@ gasto em anúncios, e um bloco de notas para ideias soltas.
   próprios dados (RLS no banco).
 - **Início** — relatório do mês (lucro, faturamento, anúncios, ROAS, vendas, comparação com
   o mês anterior), gráfico mês a mês, divisão por oferta, cards das ofertas ativas e, abaixo,
-  as testadas, em andamento e em projeto.
+  as desativadas, em andamento e em segundo plano.
 - **Ofertas** — lista por situação, busca e a ficha de cada oferta: nicho, preço, formato,
   **mês a mês** (alimenta o relatório), links, vídeos, dados e informações.
-- **Ideias** — notas com título; uma ideia vira oferta "Em projeto" com um toque.
+- **Ideias** — notas com título; uma ideia vira oferta "Em andamento" com um toque, e uma oferta pode voltar a rascunho.
 
 ## Stack
 
