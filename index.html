@@ -479,6 +479,10 @@ button{touch-action:manipulation}
 .sug:hover{color:var(--accent);border-color:var(--accent)}
 .vazio-linha{margin:0;font-size:13.5px;color:var(--faint)}
 .f-info{min-height:220px;resize:vertical;line-height:1.6}
+.foot-acoes{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.foot-acoes .btn{font-size:13px;padding:7px 12px;gap:6px}
+.foot-acoes .btn .ic{width:15px;height:15px}
+.foot-acoes .btn.armed{background:var(--ink);border-color:var(--ink);color:var(--bg)}
 .dr-foot{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;padding-top:4px;font:12px var(--f-mono);color:var(--faint)}
 @media (max-width:640px){
   .drawer{border-left:0}
@@ -1847,7 +1851,7 @@ function renderDrawer(manterScroll){
 
         <footer class="dr-foot">
           <span>${o.criadoEm ? `criada ${esc(quando(o.criadoEm, true))} · atualizada ${esc(quando(o.atualizadoEm, true))}` : "ainda não salva — comece a preencher"}</span>
-          ${S.ofertas.has(edit.id) ? `<button class="btn danger" type="button" data-acao="excluir">Excluir oferta</button>` : ""}
+          ${S.ofertas.has(edit.id) ? `<span class="foot-acoes"><button class="btn" type="button" data-acao="rascunho" title="Tira do cofre de ofertas e guarda como ideia, com as anotações">${ic("ideia")}Voltar para as ideias</button><button class="btn danger" type="button" data-acao="excluir">Excluir oferta</button></span>` : ""}
         </footer>
       </div>
     </div>`;
@@ -1979,8 +1983,11 @@ dr.addEventListener("click", e => {
   if (a === "fechar") fecharDrawer();
   else if (a === "rascunho") {
     if (!b.classList.contains("armed")) {
+      // guarda o rotulo do proprio botao: o da situacao diz "Voltar a rascunho" e o do
+      // rodape diz "Voltar para as ideias" — um texto fixo aqui renomearia o outro
+      const rotulo = b.lastChild.textContent;
       b.classList.add("armed"); b.lastChild.textContent = "Toque de novo para confirmar";
-      setTimeout(() => { if (b.isConnected) { b.classList.remove("armed"); b.lastChild.textContent = "Voltar a rascunho"; } }, 4000);
+      setTimeout(() => { if (b.isConnected) { b.classList.remove("armed"); b.lastChild.textContent = rotulo; } }, 4000);
     } else voltarParaRascunho();
   }
   else if (a === "add-mes") {
