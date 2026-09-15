@@ -313,6 +313,7 @@ button{touch-action:manipulation}
 .ac-foot .ic{margin-left:auto;color:var(--faint);width:16px;height:16px}
 .ac .sem{font-size:13px;color:var(--faint);grid-column:1 / -1}
 
+.ac-pos{flex:none;font:600 11.5px var(--f-mono);color:var(--good);background:color-mix(in srgb,var(--good) 13%,transparent);border:1px solid color-mix(in srgb,var(--good) 30%,transparent);padding:3px 8px;border-radius:99px;white-space:nowrap}
 .ac-cria{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--muted);background:var(--surface3);border:1px solid var(--line);border-radius:10px;padding:7px 10px;min-width:0}
 .ac-cria .ic{width:15px;height:15px;color:var(--s-andamento)}
 .ac-cria span{white-space:nowrap}
@@ -1201,14 +1202,26 @@ function melhorCriativo(o){
   const a = (p.anuncios || []).filter(x => x.vendas > 0).sort((x, y) => y.lucro - x.lucro)[0];
   return a ? { a, p } : null;
 }
-function cardAtiva(o, mes){
+// Ativas por lucro do mês (maior primeiro); sem números do mês vão para o fim, mais recentes antes.
+function porLucro(lista, mes){
+  const linhas = mes ? numerosDoMes(mes).linhas : [];
+  const lucro = id => { const l = linhas.find(x => x.o.id === id); return l ? l.lucro : null; };
+  return [...lista].sort((a, b) => {
+    const la = lucro(a.id), lb = lucro(b.id);
+    if (la !== null && lb !== null) return lb - la;
+    if (la !== null) return -1;
+    if (lb !== null) return 1;
+    return String(b.atualizadoEm).localeCompare(String(a.atualizadoEm));
+  });
+}
+function cardAtiva(o, mes, pos){
   const l = mes ? numerosDoMes(mes).linhas.find(x => x.o.id === o.id) : null;
   const top = melhorCriativo(o);
   return `
     <article class="ac" role="button" tabindex="0" data-abrir="${esc(o.id)}" aria-label="Abrir ${esc(o.nome || "oferta")}">
       <div class="ac-top">
         <div style="min-width:0">${o.nicho ? `<span class="nicho">${esc(o.nicho)}</span>` : ""}<h3>${esc(o.nome || "Sem nome")}</h3></div>
-        <span class="pill" style="--st:var(--s-ativa)"><i></i>Ativa</span>
+        ${l && pos ? `<span class="ac-pos" title="Posição por lucro em ${esc(nomeMes(mes))}">${pos}º em lucro</span>` : `<span class="pill" style="--st:var(--s-ativa)"><i></i>Ativa</span>`}
       </div>
       <div class="tri">
         ${l ? `
@@ -1320,11 +1333,7 @@ function renderInicio(){
   const meses = mesesComNumeros();
   if (!mesSel || !meses.includes(mesSel)) mesSel = meses[meses.length - 1] || null;
   const ofertas = [...S.ofertas.values()];
-  const ativas = ofertas.filter(o => statusDe(o) === "ativa").sort((a, b) => {
-    const fa = mesSel ? numerosDoMes(mesSel).linhas.find(l => l.o.id === a.id) : null;
-    const fb = mesSel ? numerosDoMes(mesSel).linhas.find(l => l.o.id === b.id) : null;
-    return ((fb && fb.fat) || 0) - ((fa && fa.fat) || 0);
-  });
+  const ativas = porLucro(ofertas.filter(o => statusDe(o) === "ativa"), mesSel);
 
   let rel;
   if (!mesSel) {
@@ -1425,7 +1434,7 @@ function renderInicio(){
     <section class="secao" style="--st:var(--s-ativa)">
       <div class="secao-h"><h2><i></i>Ofertas ativas</h2><span class="n">${ativas.length}</span><span class="h">${mesSel ? "números de " + esc(nomeMes(mesSel)) : "no ar agora"}</span>
         <button class="link" type="button" data-acao="ver-ofertas" data-filtro="ativa">Ver na lista</button></div>
-      ${ativas.length ? `<div class="ativas">${ativas.map(o => cardAtiva(o, mesSel)).join("")}</div>`
+      ${ativas.length ? `<div class="ativas">${ativas.map((o, i) => cardAtiva(o, mesSel, i + 1)).join("")}</div>`
         : `<div class="vazio-card"><span>Nenhuma oferta ativa. Quando uma for pro ar, mude a situação dela para Ativa.</span><button class="btn sm" type="button" data-acao="nova" data-status="ativa">${ic("mais")}Cadastrar</button></div>`}
     </section>
     ${outras}`;
@@ -1518,7 +1527,7 @@ function renderGrupos(){
     <section class="grupo" style="--st:var(--s-${s.k})">
       ${filtro === "todas" ? `<header><h2><i></i>${esc(s.grupo)}</h2><span class="n">${itens.length}</span><span class="h">${esc(s.hint)}</span></header>` : ""}
       ${itens.length ? (s.k === "ativa"
-          ? `<div class="ativas">${itens.map(o => cardAtiva(o, mesesComNumeros().slice(-1)[0] || null)).join("")}</div>`
+          ? (() => { const m = mesesComNumeros().slice(-1)[0] || null; return `<div class="ativas">${porLucro(itens, m).map((o, i) => cardAtiva(o, m, i + 1)).join("")}</div>`; })()
           : `<div class="cards">${itens.map(ficha).join("")}</div>`)
         : `<div class="aviso"><h2>Nenhuma oferta ${q ? "encontrada" : "marcada"} como “${esc(s.label)}”</h2><p>${esc(s.hint)}.</p><button class="btn primary" type="button" data-acao="nova" data-status="${s.k}">${ic("mais")}Nova oferta</button></div>`}
     </section>`;
