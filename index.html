@@ -370,6 +370,13 @@ button{touch-action:manipulation}
 .st-pick button[aria-checked="true"]{background:var(--st);border-color:var(--st);color:var(--surface)}
 .st-pick button[aria-checked="true"] i{background:var(--surface)}
 .st-hint{margin:0;font-size:13px;color:var(--muted)}
+.st-linha{display:flex;align-items:center;justify-content:space-between;gap:8px 12px;flex-wrap:wrap}
+.rasc{display:inline-flex;align-items:center;gap:6px;font-weight:600;font-size:12.5px;padding:5px 11px;border-radius:99px;border:1px dashed var(--line2);background:transparent;color:var(--muted);cursor:pointer}
+.rasc .ic{width:15px;height:15px}
+.rasc:hover{color:var(--ink);border-color:var(--muted)}
+.rasc.armed{background:var(--ink);border-color:var(--ink);border-style:solid;color:var(--bg)}
+.toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom));transform:translateX(-50%);z-index:95;background:var(--ink);color:var(--bg);font-weight:600;font-size:14px;padding:10px 16px;border-radius:12px;box-shadow:var(--shadow);max-width:calc(100% - 32px);animation:sobe .2s ease-out}
+@media (min-width:881px){.toast{bottom:28px}}
 .fields{display:grid;grid-template-columns:1.6fr 1fr 1.3fr;gap:12px}
 .field{display:grid;gap:5px;align-content:start;min-width:0}
 .field>label,.cap{font:500 11px var(--f-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
@@ -591,6 +598,7 @@ kbd{font:11px var(--f-mono);border:1px solid var(--line2);border-bottom-width:2p
   <button class="btn big" type="button" data-acao="sair"><svg class="ic"><use href="#i-sair"/></svg>Sair da conta</button>
 </div>
 <div class="tip" id="tip" hidden></div>
+<div class="toast" id="toast" role="status" hidden></div>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.116.0/dist/umd/supabase.js"></script>
 <script>
@@ -1369,7 +1377,7 @@ function renderDrawer(manterScroll){
           <div class="st-pick" role="radiogroup" aria-label="Situação da oferta">
             ${STATUS.map(s => `<button type="button" role="radio" aria-checked="${s.k === st.k}" data-status="${s.k}" style="--st:var(--s-${s.k})"><i></i>${esc(s.label)}</button>`).join("")}
           </div>
-          <p class="st-hint">${esc(st.hint)}</p>
+          <div class="st-linha"><p class="st-hint">${esc(st.hint)}</p>${S.ofertas.has(edit.id) ? `<button type="button" class="rasc" data-acao="rascunho" title="Tira do cofre de ofertas e guarda como ideia, com as anotações">${ic("ideia")}Voltar a rascunho</button>` : ""}</div>
         </div>
         <div class="fields">
           <div class="field"><label for="f-nicho">Nicho</label><input class="input" id="f-nicho" data-f="nicho" value="${esc(o.nicho)}" placeholder="Crochê, papercraft, miçanga…"></div>
@@ -1463,6 +1471,32 @@ function renderDrawer(manterScroll){
   dr.classList.toggle("rolou", novoSc.scrollTop > 70);
   atualizarSync();
 }
+let toastTimer = 0;
+function toast(msg){ const t = $("#toast"); t.textContent = msg; t.hidden = false; clearTimeout(toastTimer); toastTimer = setTimeout(() => t.hidden = true, 3200); }
+function voltarParaRascunho(){
+  const o = edit.data, id = edit.id;
+  const extras = [];
+  if (o.nicho.trim()) extras.push("Nicho: " + o.nicho.trim());
+  if (o.preco.trim()) extras.push("Preço: R$ " + o.preco.trim());
+  if (o.formato.trim()) extras.push("Formato: " + o.formato.trim());
+  LINKS.forEach(l => { if (String(o[l.f] || "").trim()) extras.push(l.label + ": " + o[l.f].trim()); });
+  o.videos.filter(v => v.url.trim()).forEach(v => extras.push("Vídeo: " + (v.titulo.trim() ? v.titulo.trim() + " — " : "") + v.url.trim()));
+  o.dados.filter(d => d.rotulo.trim() || d.valor.trim()).forEach(d => extras.push(d.rotulo.trim() + ": " + d.valor.trim()));
+  o.mensal.filter(m => m.mes).forEach(m => extras.push(nomeMes(m.mes) + ": faturamento " + brl(m.faturamento || 0) + " · anúncios " + brl(m.investimento || 0) + (m.vendas ? " · " + m.vendas + " vendas" : "")));
+  const info = o.info.trim();
+  const jaTem = x => info.includes(x.split(": ").slice(1).join(": "));
+  const novos = extras.filter(x => !jaTem(x)).map(x => "• " + x).join("\n");
+  const texto = [info, novos].filter(Boolean).join("\n\n");
+  const alvo = (o.origemIdeia && S.ideias.get(o.origemIdeia)) || [...S.ideias.values()].find(n => n.virouOferta === id);
+  const titulo = o.nome.trim() || (alvo && alvo.titulo) || "";
+  if (alvo) salvar("ideias", alvo.id, { ...semId(alvo), titulo, texto, virouOferta:null }, 0);
+  else salvar("ideias", uid(), { titulo, texto, fixada:false }, 0);
+  apagar("ofertas", id);
+  edit.data = vazia("projeto"); edit.id = "__apagada";
+  fecharDrawer();
+  irPara("ideias");
+  toast((titulo || "A oferta") + " voltou para as ideias");
+}
 function crescer(t, min){ if (!t) return; t.style.height = "auto"; t.style.height = Math.max(min || 0, t.scrollHeight + 2) + "px"; }
 function tocar(){ salvar("ofertas", edit.id, edit.data); }
 
@@ -1534,6 +1568,12 @@ dr.addEventListener("click", e => {
   }
   const a = b.dataset.acao;
   if (a === "fechar") fecharDrawer();
+  else if (a === "rascunho") {
+    if (!b.classList.contains("armed")) {
+      b.classList.add("armed"); b.lastChild.textContent = "Toque de novo para confirmar";
+      setTimeout(() => { if (b.isConnected) { b.classList.remove("armed"); b.lastChild.textContent = "Voltar a rascunho"; } }, 4000);
+    } else voltarParaRascunho();
+  }
   else if (a === "add-mes") {
     const usados = new Set(edit.data.mensal.map(m => m.mes));
     let m = mesAtual(); let guarda = 0;
