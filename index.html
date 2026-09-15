@@ -1417,18 +1417,6 @@ function renderInicio(){
     </div>`;
   }
 
-  const outras = ["desativada", "andamento", "segundo"].map(k => {
-    const s = ST[k];
-    const itens = ofertas.filter(o => statusDe(o) === k).sort((a, b) => String(b.atualizadoEm).localeCompare(String(a.atualizadoEm)));
-    return `
-    <section class="secao" style="--st:var(--s-${k})">
-      <div class="secao-h"><h2><i></i>${esc(s.grupo)}</h2><span class="n">${itens.length}</span><span class="h">${esc(s.hint)}</span>
-        ${itens.length > 4 ? `<button class="link" type="button" data-acao="ver-ofertas" data-filtro="${k}">Ver todas</button>` : ""}</div>
-      ${itens.length ? `<div class="cards">${itens.slice(0, 4).map(ficha).join("")}</div>`
-        : `<div class="vazio-card"><span>Nenhuma oferta ${esc(s.label.toLowerCase())} por enquanto.</span><button class="btn sm" type="button" data-acao="nova" data-status="${k}">${ic("mais")}Cadastrar</button></div>`}
-    </section>`;
-  }).join("");
-
   el.innerHTML = `
     <section class="secao">${rel}</section>
     <section class="secao" style="--st:var(--s-ativa)">
@@ -1436,8 +1424,7 @@ function renderInicio(){
         <button class="link" type="button" data-acao="ver-ofertas" data-filtro="ativa">Ver na lista</button></div>
       ${ativas.length ? `<div class="ativas">${ativas.map((o, i) => cardAtiva(o, mesSel, i + 1)).join("")}</div>`
         : `<div class="vazio-card"><span>Nenhuma oferta ativa. Quando uma for pro ar, mude a situação dela para Ativa.</span><button class="btn sm" type="button" data-acao="nova" data-status="ativa">${ic("mais")}Cadastrar</button></div>`}
-    </section>
-    ${outras}`;
+    </section>`;
 }
 
 /* dica flutuante do gráfico */

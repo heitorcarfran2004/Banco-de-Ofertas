@@ -9,8 +9,7 @@ gasto em anúncios, e um bloco de notas para ideias soltas.
 - **Entrar / Criar conta** — login por e-mail e senha (Supabase Auth). Cada conta vê só os
   próprios dados (RLS no banco).
 - **Início** — relatório do mês (lucro, faturamento, anúncios, ROAS, vendas, comparação com
-  o mês anterior), gráfico mês a mês, divisão por oferta, cards das ofertas ativas e, abaixo,
-  as desativadas, em andamento e em segundo plano.
+  o mês anterior), gráfico mês a mês, divisão por oferta, e os cards das ofertas ativas, em ordem de lucro.
 - **Ofertas** — lista por situação, busca e a ficha de cada oferta: nicho, preço, formato,
   **mês a mês** (alimenta o relatório), links, vídeos, dados e informações.
 - **Ideias** — notas com título; uma ideia vira oferta "Em andamento" com um toque, e uma oferta pode voltar a rascunho.
