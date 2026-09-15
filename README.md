@@ -11,8 +11,8 @@ gasto em anúncios, e um bloco de notas para ideias soltas.
 - **Início** — relatório do mês (lucro, faturamento, anúncios, ROAS, vendas, comparação com
   o mês anterior), gráfico mês a mês, divisão por oferta, e os cards das ofertas ativas, em ordem de lucro.
 - **Ofertas** — lista por situação, busca e a ficha de cada oferta: nicho, preço, formato,
-  **mês a mês** (alimenta o relatório), links, vídeos, dados e informações.
-- **Ideias** — notas com título; uma ideia vira oferta "Em andamento" com um toque, e uma oferta pode voltar a rascunho.
+  básico no topo e seções recolhíveis com resumo: análise dos criativos, **mês a mês** (alimenta o relatório), links, vídeos, dados e informações.
+- **Ideias** — mural (ou lista) com resumo, filtro por tag, ordem por recentes/potencial/A–Z. Cada ideia tem cor, potencial, tags e anotações; as linhas com • viram produtos que podem virar oferta um a um, e a ideia inteira também. Uma oferta pode voltar a rascunho.
 
 ## Stack
 
