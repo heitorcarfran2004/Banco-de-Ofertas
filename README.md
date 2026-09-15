@@ -1,26 +1,42 @@
 # Cofre de Ofertas
 
-App para cadastrar as ofertas de low ticket por situação — **Ativa, Testada, Em andamento,
-Em projeto e Segundo plano** — e um bloco de notas para ideias soltas.
+Webapp instalável (PWA) para cadastrar ofertas de low ticket por situação — **Ativa, Testada,
+Em andamento, Em projeto e Segundo plano** — com relatório mensal de faturamento, lucro e
+gasto em anúncios, e um bloco de notas para ideias soltas.
 
-Cada oferta guarda nome, nicho, preço, formato, links (página, checkout, referência,
-entregável), vídeos sobre o conteúdo, dados e números, e um campo livre de informações.
-Uma ideia vira oferta "Em projeto" com um toque.
+## Telas
 
-## Onde roda
+- **Entrar / Criar conta** — login por e-mail e senha (Supabase Auth). Cada conta vê só os
+  próprios dados (RLS no banco).
+- **Início** — relatório do mês (lucro, faturamento, anúncios, ROAS, vendas, comparação com
+  o mês anterior), gráfico mês a mês, divisão por oferta, cards das ofertas ativas e, abaixo,
+  as testadas, em andamento e em projeto.
+- **Ofertas** — lista por situação, busca e a ficha de cada oferta: nicho, preço, formato,
+  **mês a mês** (alimenta o relatório), links, vídeos, dados e informações.
+- **Ideias** — notas com título; uma ideia vira oferta "Em projeto" com um toque.
 
-- **claude.ai (Artifact):** a versão principal. Os dados ficam no banco do próprio
-  Artifact e sincronizam entre celular e computador.
-- **Fora do claude.ai** (abrir o `index.html`, Vercel, GitHub Pages): o app funciona igual,
-  mas salva só no navegador (localStorage) — o indicador mostra "Salvo só neste navegador".
+## Stack
 
-Nenhum dado de oferta fica neste repositório.
+Um `index.html` sem build: HTML, CSS e JS puros + `@supabase/supabase-js` pelo jsDelivr.
 
-## Arquivos
+- `manifest.webmanifest` e `icons/` — instalação na tela inicial
+- `sw.js` — guarda a casca do app para abrir rápido e sem internet (dados nunca vão para o cache)
+- `vercel.json` — `sw.js` sem cache e o tipo certo do manifest
 
-- `cofre-ofertas.html` — fonte, publicada como Artifact (sem `<!doctype>`/`<head>`, o
-  claude.ai adiciona)
-- `index.html` — gerado; documento completo para abrir direto ou hospedar
-- `montar.cjs` — gera o `index.html`: `node montar.cjs`
+## Supabase
 
-Editou a fonte? Rode `node montar.cjs` antes de commitar.
+Projeto `banco-de-ofertas` (região São Paulo). Tabelas `ofertas` e `ideias`:
+`user_id` (dono), `id`, `dados` (jsonb com a ficha inteira), `criado_em`, `atualizado_em`.
+RLS liga cada linha ao `auth.uid()`; o papel `anon` não lê nada. Realtime ligado nas duas
+tabelas — o que muda no celular aparece no computador.
+
+A chave no `index.html` é a **publishable** (feita para ficar no navegador). Nunca coloque a
+service role aqui.
+
+## Deploy
+
+Importar este repositório na Vercel (framework: *Other*, sem build). Depois, no Supabase,
+em **Authentication → URL Configuration**, pôr a URL da Vercel em *Site URL* e em
+*Redirect URLs* — é para lá que o link de confirmação de cadastro manda.
+
+Rodar local: qualquer servidor estático na pasta (ex.: `npx serve .`).
