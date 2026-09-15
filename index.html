@@ -313,6 +313,73 @@ button{touch-action:manipulation}
 .ac-foot .ic{margin-left:auto;color:var(--faint);width:16px;height:16px}
 .ac .sem{font-size:13px;color:var(--faint);grid-column:1 / -1}
 
+.ac-cria{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--muted);background:var(--surface3);border:1px solid var(--line);border-radius:10px;padding:7px 10px;min-width:0}
+.ac-cria .ic{width:15px;height:15px;color:var(--s-andamento)}
+.ac-cria span{white-space:nowrap}
+.ac-cria b{color:var(--ink);font-weight:600;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ac-cria em{font-style:normal;font:600 12px var(--f-mono);margin-left:auto;white-space:nowrap}
+.ac-cria .pos{color:var(--good)}.ac-cria .neg{color:var(--bad)}
+
+/* análise de criativos */
+.cria-h{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
+.cria-h .seg-mini{margin-left:auto}
+.seg-mini{display:inline-grid;grid-auto-flow:column;background:var(--surface2);border:1px solid var(--line);border-radius:9px;padding:3px}
+.seg-mini button{border:0;background:transparent;padding:5px 12px;border-radius:7px;font-weight:600;font-size:13px;color:var(--muted);cursor:pointer}
+.seg-mini button[aria-selected="true"]{background:var(--surface);color:var(--ink);box-shadow:var(--shadow)}
+.cria .pos{color:var(--good)}.cria .neg{color:var(--bad)}
+.cria-tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.cria-tiles div{background:var(--bg);border:1px solid var(--line);border-radius:12px;padding:10px 12px;display:grid;gap:1px;min-width:0}
+.cria-tiles span{font-size:11.5px;color:var(--muted)}
+.cria-tiles b{font:600 16px var(--f-body);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.diag{background:color-mix(in srgb,var(--accent) 7%,var(--bg));border:1px solid color-mix(in srgb,var(--accent) 24%,var(--line));border-radius:14px;padding:14px 16px;display:grid;gap:10px}
+.diag-resumo{margin:0;font:600 15.5px/1.45 var(--f-body);text-wrap:pretty}
+.diag-pontos{margin:0;padding-left:18px;display:grid;gap:7px;font-size:14px;line-height:1.5}
+.diag-pontos li::marker{color:var(--accent)}
+.diag h4,.cria-sec h4{margin:2px 0 0;font:650 14.5px var(--f-display);display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.cria-sec h4 .n{font:500 12px var(--f-mono);color:var(--faint)}
+.acoes{list-style:none;margin:0;padding:0;display:grid;gap:7px}
+.acao{display:grid;grid-template-columns:96px minmax(0,1fr);gap:10px;align-items:start;font-size:14px;line-height:1.45}
+.acao-tag{display:inline-flex;align-items:center;gap:5px;font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.05em;padding:3px 8px;border-radius:6px;color:var(--tc);background:color-mix(in srgb,var(--tc) 14%,transparent);justify-self:start}
+.acao-tag .ic{width:13px;height:13px}
+.acao.escalar{--tc:var(--good)}.acao.pausar{--tc:var(--bad)}.acao.testar{--tc:var(--accent)}.acao.criar{--tc:var(--s-testada)}.acao.atencao{--tc:var(--s-andamento)}
+.diag-nota{margin:0;font-size:12px;color:var(--faint)}
+.cria-sec{display:grid;gap:10px}
+.cr-lista{display:grid;gap:8px}
+.cr{display:grid;grid-template-columns:30px minmax(0,1fr) auto;gap:10px;background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:12px 10px 12px 12px}
+.cr-rank{font:700 20px/1 var(--f-display);color:var(--faint);padding-top:2px;text-align:center}
+.cr.top1 .cr-rank{color:var(--s-andamento)}
+.cr-main{display:grid;gap:8px;min-width:0}
+.cr-head{display:flex;justify-content:space-between;align-items:flex-start;gap:6px 10px;flex-wrap:wrap}
+.cr-nome{display:grid;min-width:0}
+.cr-nome b{font:650 15px/1.3 var(--f-display);overflow-wrap:anywhere}
+.cr-nome span{font:11.5px var(--f-mono);color:var(--faint)}
+.cr-tags{display:flex;align-items:center;gap:6px 8px;flex-wrap:wrap}
+.badge{font-weight:700;font-size:11px;padding:3px 8px;border-radius:99px;color:var(--bc);background:color-mix(in srgb,var(--bc) 14%,transparent);white-space:nowrap}
+.tend{font-weight:600;font-size:11.5px;white-space:nowrap}
+.tend.up{color:var(--good)}.tend.down{color:var(--bad)}
+.st-ad{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;color:var(--faint);white-space:nowrap}
+.st-ad i{width:7px;height:7px;border-radius:50%;background:var(--faint)}
+.st-ad.on{color:var(--muted)}.st-ad.on i{background:var(--s-ativa)}
+.cr-bar{height:4px;background:var(--surface3);border-radius:2px;overflow:hidden}
+.cr-bar i{display:block;height:100%;background:var(--viz-lucro);border-radius:2px}
+.cr-bar i.neg{background:var(--viz-anuncio)}
+.cr-met{margin:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px 10px}
+.cr-met div{min-width:0}
+.cr-met dt{font-size:11px;color:var(--faint)}
+.cr-met dd{margin:0;font:600 13px var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cr-met dd small{font:500 10.5px var(--f-body);color:var(--faint)}
+.cr-copiar{width:32px;height:32px}
+.cr-copiar .ic{width:17px;height:17px}
+.vaz-lista{list-style:none;margin:0;padding:0;display:grid;gap:5px}
+.vaz-lista li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:2px 12px;padding:8px 12px;border-radius:10px;background:color-mix(in srgb,var(--bad) 6%,var(--bg));border:1px solid color-mix(in srgb,var(--bad) 20%,var(--line))}
+.vz-nome{font-weight:600;font-size:14px;overflow-wrap:anywhere}
+.vz-nome small{font:11.5px var(--f-mono);color:var(--faint);font-weight:400}
+.vz-g{font:600 14px var(--f-mono);color:var(--bad);text-align:right;white-space:nowrap}
+.vz-m{grid-column:1 / -1;font-size:12px;color:var(--muted)}
+@media (max-width:760px){
+  .acao{grid-template-columns:1fr;gap:4px}
+}
+@media (max-width:520px){ .cria-tiles{grid-template-columns:repeat(2,minmax(0,1fr))} }
 .vazio-card{border:1.5px dashed var(--line2);border-radius:16px;padding:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;color:var(--muted);font-size:14px}
 
 /* ================= fichas ================= */
@@ -478,6 +545,12 @@ kbd{font:11px var(--f-mono);border:1px solid var(--line2);border-bottom-width:2p
   <symbol id="i-pin" viewBox="0 0 24 24"><path d="M9 3.5h6l-1 6.5 3.5 3.5h-11L10 10 9 3.5ZM12 13.5V21"/></symbol>
   <symbol id="i-transformar" viewBox="0 0 24 24"><path d="M5 12h12M13 7l5 5-5 5"/></symbol>
   <symbol id="i-sair" viewBox="0 0 24 24"><path d="M14 4h4a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-4"/><path d="M10 16l-4-4 4-4M6 12h10"/></symbol>
+  <symbol id="i-trofeu" viewBox="0 0 24 24"><path d="M8 4h8v5a4 4 0 0 1-8 0V4Z"/><path d="M8 6H5v1.5A3 3 0 0 0 8 10.5M16 6h3v1.5a3 3 0 0 1-3 3M12 13v4M8.5 20h7M10 17h4"/></symbol>
+  <symbol id="i-copiar" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></symbol>
+  <symbol id="i-subir" viewBox="0 0 24 24"><path d="M4 16l6-6 4 4 6-6"/><path d="M15 8h5v5"/></symbol>
+  <symbol id="i-pausa" viewBox="0 0 24 24"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></symbol>
+  <symbol id="i-teste" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.7 3h10.6a2 2 0 0 0 1.7-3l-5-9V3"/><path d="M7.5 15h9"/></symbol>
+  <symbol id="i-alerta" viewBox="0 0 24 24"><path d="M12 4 2.5 20h19L12 4Z"/><path d="M12 10v4M12 17.5v.01"/></symbol>
   <symbol id="i-calendario" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15" rx="2.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol>
 </svg>
 
@@ -1096,6 +1169,151 @@ function deltaHtml(atual, anterior, mesAnt){
   return `<span class="delta ${cls}">${seta} ${p > 0 ? "+" : ""}${p.toLocaleString("pt-BR", { maximumFractionDigits:0 })}% <span>vs ${esc(nomeMes(mesAnt))}</span></span>`;
 }
 
+/* ================= criativos ================= */
+let perCria = "7d", criaTodos = false;
+const CLASSE = {
+  escalar:   { label:"Escalar",         cor:"var(--good)" },
+  promissor: { label:"Promissor",       cor:"var(--accent)" },
+  lucrando:  { label:"Lucrando",        cor:"var(--s-projeto)" },
+  limite:    { label:"No limite",       cor:"var(--s-andamento)" },
+  prejuizo:  { label:"Prejuízo",        cor:"var(--bad)" },
+  queimando: { label:"Queimando verba", cor:"var(--bad)" },
+  pouco:     { label:"Pouca verba",     cor:"var(--faint)" },
+};
+const ACAO = {
+  escalar:{ label:"Escalar", ic:"subir" }, pausar:{ label:"Pausar", ic:"pausa" }, testar:{ label:"Testar", ic:"teste" },
+  criar:{ label:"Criar", ic:"mais" }, atencao:{ label:"Atenção", ic:"alerta" },
+};
+function classificar(a){
+  if (!a.vendas) return a.gasto >= 15 ? "queimando" : "pouco";
+  if (a.gasto < 12) return a.roas >= 2 ? "promissor" : "pouco";
+  if (a.roas >= 2) return a.vendas >= 3 ? "escalar" : "promissor";
+  if (a.roas >= 1.3) return "lucrando";
+  if (a.roas >= 1) return "limite";
+  return "prejuizo";
+}
+const dataCurta = iso => { const [, m, d] = String(iso || "").split("-"); return d && m ? `${d}/${m}` : ""; };
+function melhorCriativo(o){
+  const c = o.criativos;
+  if (!c || !c.periodos) return null;
+  const p = c.periodos["7d"] || c.periodos["3d"];
+  if (!p) return null;
+  const a = (p.anuncios || []).filter(x => x.vendas > 0).sort((x, y) => y.lucro - x.lucro)[0];
+  return a ? { a, p } : null;
+}
+function cardAtiva(o, mes){
+  const l = mes ? numerosDoMes(mes).linhas.find(x => x.o.id === o.id) : null;
+  const top = melhorCriativo(o);
+  return `
+    <article class="ac" role="button" tabindex="0" data-abrir="${esc(o.id)}" aria-label="Abrir ${esc(o.nome || "oferta")}">
+      <div class="ac-top">
+        <div style="min-width:0">${o.nicho ? `<span class="nicho">${esc(o.nicho)}</span>` : ""}<h3>${esc(o.nome || "Sem nome")}</h3></div>
+        <span class="pill" style="--st:var(--s-ativa)"><i></i>Ativa</span>
+      </div>
+      <div class="tri">
+        ${l ? `
+        <div><span>Faturamento</span><b>${esc(brlCurto(l.fat))}</b></div>
+        <div><span><i style="--sw:var(--viz-lucro)"></i>Lucro</span><b class="${l.lucro < 0 ? "neg" : "pos"}">${esc(brlCurto(l.lucro))}</b></div>
+        <div><span><i style="--sw:var(--viz-anuncio)"></i>Anúncios</span><b>${esc(brlCurto(l.inv))}</b></div>`
+        : `<p class="sem">Sem números ${mes ? "de " + esc(nomeMes(mes)) : "mensais"} — toque para preencher o Mês a mês.</p>`}
+      </div>
+      ${top ? `<div class="ac-cria" title="Melhor criativo em ${esc(top.p.rotulo.toLowerCase())}">${ic("trofeu")}<span>Top criativo</span><b>${esc(top.a.nome)}</b><em class="${top.a.roas < 1 ? "neg" : "pos"}">ROAS ${esc(dec(top.a.roas))}</em></div>` : ""}
+      <div class="ac-foot">
+        ${l && l.inv ? `<span class="roas ${l.fat / l.inv < 1 ? "neg" : ""}">ROAS ${esc(dec(l.fat / l.inv))}</span>` : ""}
+        ${l && l.vendas ? `<span>${esc(l.vendas.toLocaleString("pt-BR"))} vendas${mes ? " em " + esc(nomeMes(mes, true)) : ""}</span>` : ""}
+        ${o.preco ? `<span>ticket R$ ${esc(o.preco)}</span>` : ""}
+        ${ic("seta")}
+      </div>
+    </article>`;
+}
+function blocoCriativos(o){
+  const c = o.criativos;
+  let chaves = ["3d", "7d"].filter(k => c.periodos[k]);
+  if (!chaves.length) return "";
+  const p3 = c.periodos["3d"], p7 = c.periodos["7d"];
+  const mesmoPeriodo = p3 && p7 && p3.de === p7.de && p3.ate === p7.ate;
+  if (mesmoPeriodo) chaves = ["7d"];
+  if (!chaves.includes(perCria)) perCria = chaves[chaves.length - 1];
+  const p = c.periodos[perCria];
+  const outro = mesmoPeriodo ? null : c.periodos[perCria === "7d" ? "3d" : "7d"];
+  const ads = [...(p.anuncios || [])].sort((a, b) => b.lucro - a.lucro);
+  const t = ads.reduce((s, a) => ({ g:s.g + a.gasto, f:s.f + a.fat, v:s.v + a.vendas }), { g:0, f:0, v:0 });
+  const lucro = t.f - t.g, roas = t.g ? t.f / t.g : null;
+  const tendencia = a => {
+    if (!outro) return "";
+    const b = (outro.anuncios || []).find(x => x.id === a.id);
+    if (!b || !a.roas || !b.roas || a.gasto < 10 || b.gasto < 10) return "";
+    const r3 = perCria === "3d" ? a.roas : b.roas, r7 = perCria === "3d" ? b.roas : a.roas;
+    if (r3 / r7 >= 1.15) return `<span class="tend up" title="ROAS ${dec(r7)} em 7 dias → ${dec(r3)} nos últimos 3">▲ esquentando</span>`;
+    if (r3 / r7 <= 0.85) return `<span class="tend down" title="ROAS ${dec(r7)} em 7 dias → ${dec(r3)} nos últimos 3">▼ esfriando</span>`;
+    return "";
+  };
+  const vendedores = ads.filter(a => a.vendas > 0);
+  const lista = criaTodos ? ads : vendedores.slice(0, 5);
+  const vaz = ads.filter(a => !a.vendas && a.gasto > 0).sort((a, b) => b.gasto - a.gasto);
+  const vazTotal = vaz.reduce((s, a) => s + a.gasto, 0);
+  const maxLucro = Math.max(1, ...ads.map(a => Math.abs(a.lucro)));
+  const an = c.analise || {};
+  const linha = (a, i) => {
+    const cl = CLASSE[classificar(a)];
+    return `
+    <article class="cr ${i === 0 && a.lucro > 0 ? "top1" : ""}">
+      <div class="cr-rank">${i + 1}</div>
+      <div class="cr-main">
+        <div class="cr-head">
+          <div class="cr-nome"><b>${esc(a.nome)}</b><span>…${esc(String(a.id).slice(-6))}${a.conta ? " · " + esc(a.conta) : ""}</span></div>
+          <div class="cr-tags"><span class="badge" style="--bc:${cl.cor}">${esc(cl.label)}</span>${tendencia(a)}<span class="st-ad ${a.status === "ativo" ? "on" : ""}"><i></i>${a.status === "ativo" ? "Ativo" : "Pausado"}</span></div>
+        </div>
+        <div class="cr-bar" aria-hidden="true"><i class="${a.lucro < 0 ? "neg" : ""}" style="width:${Math.abs(a.lucro) / maxLucro * 100}%"></i></div>
+        <dl class="cr-met">
+          <div><dt>ROAS</dt><dd class="${a.roas === null ? "" : a.roas < 1 ? "neg" : "pos"}">${a.roas === null ? "—" : esc(dec(a.roas))}</dd></div>
+          <div><dt>Lucro</dt><dd class="${a.lucro < 0 ? "neg" : "pos"}">${esc(brlCurto(a.lucro))}</dd></div>
+          <div><dt>Gasto</dt><dd>${esc(brlCurto(a.gasto))}</dd></div>
+          <div><dt>Vendas</dt><dd>${a.vendas}${a.pend ? `<small> +${a.pend} pend.</small>` : ""}</dd></div>
+          <div><dt>CPA</dt><dd>${a.cpa === null ? "—" : esc(brlCurto(a.cpa))}</dd></div>
+          <div><dt>CTR</dt><dd>${a.ctr === null ? "—" : esc(dec(a.ctr)) + "%"}</dd></div>
+          <div><dt>Gancho</dt><dd>${a.hook ? esc(dec(a.hook, 0)) + "%" : "—"}</dd></div>
+          <div><dt>CPM</dt><dd>${a.cpm === null ? "—" : esc(brlCurto(a.cpm))}</dd></div>
+        </dl>
+      </div>
+      <button class="icon-btn cr-copiar" type="button" data-copiar="${esc(a.id)}" title="Copiar ID do anúncio" aria-label="Copiar ID do anúncio ${esc(a.nome)}">${ic("copiar")}</button>
+    </article>`;
+  };
+  return `
+  <section class="blk cria" style="--st:var(--s-andamento)">
+    <header class="cria-h">${ic("trofeu")}<h3>Análise dos criativos</h3>
+      ${chaves.length > 1 ? `<div class="seg-mini" role="tablist" aria-label="Período">${chaves.map(k => `<button type="button" role="tab" data-per="${k}" aria-selected="${k === perCria}">${k === "3d" ? "3 dias" : "7 dias"}</button>`).join("")}</div>` : ""}
+    </header>
+    <p class="sub">${esc(p.rotulo)} · ${esc(dataCurta(p.de))}${p.de !== p.ate ? " a " + esc(dataCurta(p.ate)) : ""} · ${esc(c.fonte || "")} · atualizado ${esc(quando(c.atualizadoEm, true))}</p>
+    <div class="cria-tiles">
+      <div><span>Gasto</span><b>${esc(brl(t.g))}</b></div>
+      <div><span>Faturamento</span><b>${esc(brl(t.f))}</b></div>
+      <div><span>Lucro</span><b class="${lucro < 0 ? "neg" : "pos"}">${esc(brl(lucro))}</b></div>
+      <div><span>ROAS</span><b class="${roas !== null && roas < 1 ? "neg" : "pos"}">${roas === null ? "—" : esc(dec(roas))}</b></div>
+      <div><span>Vendas</span><b>${t.v.toLocaleString("pt-BR")}</b></div>
+      <div><span>CPA médio</span><b>${t.v ? esc(brl(t.g / t.v)) : "—"}</b></div>
+    </div>
+    ${an.resumo ? `
+    <div class="diag">
+      <p class="diag-resumo">${esc(an.resumo)}</p>
+      ${an.pontos && an.pontos.length ? `<ul class="diag-pontos">${an.pontos.map(x => `<li>${esc(x)}</li>`).join("")}</ul>` : ""}
+      ${an.acoes && an.acoes.length ? `<h4>O que fazer agora</h4><ul class="acoes">${an.acoes.map(x => { const a = ACAO[x.tipo] || ACAO.atencao; return `<li class="acao ${esc(x.tipo)}"><span class="acao-tag">${ic(a.ic)}${esc(a.label)}</span><span>${esc(x.texto)}</span></li>`; }).join("")}</ul>` : ""}
+      <p class="diag-nota">Diagnóstico escrito olhando ${mesmoPeriodo ? "o período disponível" : "os últimos 3 e 7 dias juntos"}; os números abaixo mudam com o seletor.</p>
+    </div>` : ""}
+    <div class="cria-sec">
+      <h4>${criaTodos ? "Todos os criativos" : "Criativos que mais performaram"} <span class="n">${vendedores.length} com venda de ${ads.length} · ordenado por lucro</span></h4>
+      ${lista.length ? `<div class="cr-lista">${lista.map(linha).join("")}</div>` : `<p class="vazio-linha">Nenhum criativo vendeu nesse período.</p>`}
+      ${ads.length > lista.length || criaTodos ? `<button class="btn add" type="button" data-acao="cria-todos">${criaTodos ? "Mostrar só os 5 melhores" : `Ver todos os ${ads.length} criativos`}</button>` : ""}
+    </div>
+    ${vaz.length ? `
+    <div class="cria-sec">
+      <h4>Onde está vazando <span class="n">${vaz.length} sem venda · ${esc(brl(vazTotal))} gastos</span></h4>
+      <ul class="vaz-lista">${vaz.slice(0, 6).map(a => `<li><span class="vz-nome">${esc(a.nome)} <small>…${esc(String(a.id).slice(-6))} · ${a.status === "ativo" ? "ativo" : "pausado"}</small></span><span class="vz-g">${esc(brl(a.gasto))}</span><span class="vz-m">CTR ${a.ctr === null ? "—" : esc(dec(a.ctr)) + "%"} · ${a.cliques || 0} cliques · gancho ${a.hook ? esc(dec(a.hook, 0)) + "%" : "—"}</span></li>`).join("")}</ul>
+      ${vaz.length > 6 ? `<p class="vazio-linha">+ ${vaz.length - 6} ${vaz.length - 6 === 1 ? "anúncio" : "anúncios"} sem venda com gasto menor.</p>` : ""}
+    </div>` : ""}
+  </section>`;
+}
+
 function renderInicio(){
   const el = $("#view-inicio");
   if (!carregado) { el.innerHTML = `<p class="poucos">Abrindo o cofre…</p>`; return; }
@@ -1190,30 +1408,6 @@ function renderInicio(){
     </div>`;
   }
 
-  const cardAtiva = o => {
-    const l = mesSel ? numerosDoMes(mesSel).linhas.find(x => x.o.id === o.id) : null;
-    return `
-    <article class="ac" role="button" tabindex="0" data-abrir="${esc(o.id)}" aria-label="Abrir ${esc(o.nome || "oferta")}">
-      <div class="ac-top">
-        <div style="min-width:0">${o.nicho ? `<span class="nicho">${esc(o.nicho)}</span>` : ""}<h3>${esc(o.nome || "Sem nome")}</h3></div>
-        <span class="pill" style="--st:var(--s-ativa)"><i></i>Ativa</span>
-      </div>
-      <div class="tri">
-        ${l ? `
-        <div><span>Faturamento</span><b>${esc(brlCurto(l.fat))}</b></div>
-        <div><span><i style="--sw:var(--viz-lucro)"></i>Lucro</span><b class="${l.lucro < 0 ? "neg" : "pos"}">${esc(brlCurto(l.lucro))}</b></div>
-        <div><span><i style="--sw:var(--viz-anuncio)"></i>Anúncios</span><b>${esc(brlCurto(l.inv))}</b></div>`
-        : `<p class="sem">Sem números ${mesSel ? "de " + esc(nomeMes(mesSel)) : "mensais"} — toque para preencher o Mês a mês.</p>`}
-      </div>
-      <div class="ac-foot">
-        ${l && l.inv ? `<span class="roas ${l.fat / l.inv < 1 ? "neg" : ""}">ROAS ${esc(dec(l.fat / l.inv))}</span>` : ""}
-        ${l && l.vendas ? `<span>${esc(l.vendas.toLocaleString("pt-BR"))} vendas</span>` : ""}
-        ${o.preco ? `<span>ticket R$ ${esc(o.preco)}</span>` : ""}
-        ${ic("seta")}
-      </div>
-    </article>`;
-  };
-
   const outras = ["testada", "andamento", "projeto", "segundo"].map(k => {
     const s = ST[k];
     const itens = ofertas.filter(o => statusDe(o) === k).sort((a, b) => String(b.atualizadoEm).localeCompare(String(a.atualizadoEm)));
@@ -1232,7 +1426,7 @@ function renderInicio(){
     <section class="secao" style="--st:var(--s-ativa)">
       <div class="secao-h"><h2><i></i>Ofertas ativas</h2><span class="n">${ativas.length}</span><span class="h">${mesSel ? "números de " + esc(nomeMes(mesSel)) : "no ar agora"}</span>
         <button class="link" type="button" data-acao="ver-ofertas" data-filtro="ativa">Ver na lista</button></div>
-      ${ativas.length ? `<div class="ativas">${ativas.map(cardAtiva).join("")}</div>`
+      ${ativas.length ? `<div class="ativas">${ativas.map(o => cardAtiva(o, mesSel)).join("")}</div>`
         : `<div class="vazio-card"><span>Nenhuma oferta ativa. Quando uma for pro ar, mude a situação dela para Ativa.</span><button class="btn sm" type="button" data-acao="nova" data-status="ativa">${ic("mais")}Cadastrar</button></div>`}
     </section>
     ${outras}`;
@@ -1324,7 +1518,9 @@ function renderGrupos(){
     return `
     <section class="grupo" style="--st:var(--s-${s.k})">
       ${filtro === "todas" ? `<header><h2><i></i>${esc(s.grupo)}</h2><span class="n">${itens.length}</span><span class="h">${esc(s.hint)}</span></header>` : ""}
-      ${itens.length ? `<div class="cards">${itens.map(ficha).join("")}</div>`
+      ${itens.length ? (s.k === "ativa"
+          ? `<div class="ativas">${itens.map(o => cardAtiva(o, mesesComNumeros().slice(-1)[0] || null)).join("")}</div>`
+          : `<div class="cards">${itens.map(ficha).join("")}</div>`)
         : `<div class="aviso"><h2>Nenhuma oferta ${q ? "encontrada" : "marcada"} como “${esc(s.label)}”</h2><p>${esc(s.hint)}.</p><button class="btn primary" type="button" data-acao="nova" data-status="${s.k}">${ic("mais")}Nova oferta</button></div>`}
     </section>`;
   }).join("");
@@ -1344,6 +1540,7 @@ function novaOferta(status){ mostrarDrawer({ id:uid(), data:vazia(ST[status] ? s
 function mostrarDrawer(e){
   fecharSheet(); esconderTip();
   if (!edit) focoAntes = document.activeElement;
+  if (!edit || edit.id !== e.id) criaTodos = false;
   edit = e;
   dr.hidden = false; $("#scrim").hidden = false;
   document.body.style.overflow = "hidden";
@@ -1379,6 +1576,7 @@ function renderDrawer(manterScroll){
           </div>
           <div class="st-linha"><p class="st-hint">${esc(st.hint)}</p>${S.ofertas.has(edit.id) ? `<button type="button" class="rasc" data-acao="rascunho" title="Tira do cofre de ofertas e guarda como ideia, com as anotações">${ic("ideia")}Voltar a rascunho</button>` : ""}</div>
         </div>
+        ${o.criativos && o.criativos.periodos ? blocoCriativos(o) : ""}
         <div class="fields">
           <div class="field"><label for="f-nicho">Nicho</label><input class="input" id="f-nicho" data-f="nicho" value="${esc(o.nicho)}" placeholder="Crochê, papercraft, miçanga…"></div>
           <div class="field"><label for="f-preco">Preço principal (R$)</label><input class="input mono" id="f-preco" data-f="preco" value="${esc(o.preco)}" placeholder="19,90" inputmode="decimal"></div>
@@ -1553,6 +1751,15 @@ dr.addEventListener("click", e => {
   const b = e.target.closest("button, a");
   if (!b) return;
   if (b.tagName === "A") { if (b.getAttribute("href") === "#") e.preventDefault(); return; }
+  if (b.dataset.per) { perCria = b.dataset.per; renderDrawer(true); dr.querySelector(`[data-per="${perCria}"]`)?.focus(); return; }
+  if (b.dataset.copiar) {
+    const id = b.dataset.copiar;
+    (navigator.clipboard ? navigator.clipboard.writeText(id) : Promise.reject())
+      .then(() => toast("ID " + id + " copiado — cole na busca do Gerenciador"))
+      .catch(() => toast("ID do anúncio: " + id));
+    return;
+  }
+  if (b.dataset.acao === "cria-todos") { criaTodos = !criaTodos; renderDrawer(true); return; }
   if (b.dataset.status) {
     edit.data.status = b.dataset.status; tocar(); renderDrawer(true);
     dr.querySelector(`[data-status="${b.dataset.status}"]`).focus();
