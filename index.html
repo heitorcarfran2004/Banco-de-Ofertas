@@ -1330,6 +1330,9 @@ function deltaHtml(atual, anterior, mesAnt){
 }
 
 /* ================= criativos ================= */
+/* o dado vem da rotina diária: se algum campo vier fora do formato, a tela não pode cair */
+const soLista = v => Array.isArray(v) ? v : [];
+const emFrases = v => Array.isArray(v) ? v.filter(x => typeof x === "string") : (typeof v === "string" && v.trim() ? [v.trim()] : []);
 let perCria = "7d", criaTodos = false;
 const CLASSE = {
   escalar:   { label:"Escalar",         cor:"var(--good)" },
@@ -1358,7 +1361,7 @@ function melhorCriativo(o){
   if (!c || !c.periodos) return null;
   const p = c.periodos["7d"] || c.periodos["3d"];
   if (!p) return null;
-  const a = (p.anuncios || []).filter(x => x.vendas > 0).sort((x, y) => y.lucro - x.lucro)[0];
+  const a = soLista(p.anuncios).filter(x => x.vendas > 0).sort((x, y) => y.lucro - x.lucro)[0];
   return a ? { a, p } : null;
 }
 // Ativas por lucro do mês (maior primeiro); sem números do mês vão para o fim, mais recentes antes.
@@ -1408,12 +1411,12 @@ function blocoCriativos(o){
   if (!chaves.includes(perCria)) perCria = chaves[chaves.length - 1];
   const p = c.periodos[perCria];
   const outro = mesmoPeriodo ? null : c.periodos[perCria === "7d" ? "3d" : "7d"];
-  const ads = [...(p.anuncios || [])].sort((a, b) => b.lucro - a.lucro);
+  const ads = [...soLista(p.anuncios)].sort((a, b) => b.lucro - a.lucro);
   const t = ads.reduce((s, a) => ({ g:s.g + a.gasto, f:s.f + a.fat, v:s.v + a.vendas }), { g:0, f:0, v:0 });
   const lucro = t.f - t.g, roas = t.g ? t.f / t.g : null;
   const tendencia = a => {
     if (!outro) return "";
-    const b = (outro.anuncios || []).find(x => x.id === a.id);
+    const b = soLista(outro.anuncios).find(x => x.id === a.id);
     if (!b || !a.roas || !b.roas || a.gasto < 10 || b.gasto < 10) return "";
     const r3 = perCria === "3d" ? a.roas : b.roas, r7 = perCria === "3d" ? b.roas : a.roas;
     if (r3 / r7 >= 1.15) return `<span class="tend up" title="ROAS ${dec(r7)} em 7 dias → ${dec(r3)} nos últimos 3">▲ esquentando</span>`;
@@ -1468,8 +1471,8 @@ function blocoCriativos(o){
     ${an.resumo ? `
     <div class="diag">
       <p class="diag-resumo">${esc(an.resumo)}</p>
-      ${an.pontos && an.pontos.length ? `<ul class="diag-pontos">${an.pontos.map(x => `<li>${esc(x)}</li>`).join("")}</ul>` : ""}
-      ${an.acoes && an.acoes.length ? `<h4>O que fazer agora</h4><ul class="acoes">${an.acoes.map(x => { const a = ACAO[x.tipo] || ACAO.atencao; return `<li class="acao ${esc(x.tipo)}"><span class="acao-tag">${ic(a.ic)}${esc(a.label)}</span><span>${esc(x.texto)}</span></li>`; }).join("")}</ul>` : ""}
+      ${emFrases(an.pontos).length ? `<ul class="diag-pontos">${emFrases(an.pontos).map(x => `<li>${esc(x)}</li>`).join("")}</ul>` : ""}
+      ${soLista(an.acoes).length ? `<h4>O que fazer agora</h4><ul class="acoes">${soLista(an.acoes).filter(x => x && typeof x === "object").map(x => { const a = ACAO[x.tipo] || ACAO.atencao; return `<li class="acao ${esc(x.tipo)}"><span class="acao-tag">${ic(a.ic)}${esc(a.label)}</span><span>${esc(x.texto)}</span></li>`; }).join("")}</ul>` : ""}
       <p class="diag-nota">Diagnóstico escrito olhando ${mesmoPeriodo ? "o período disponível" : "os últimos 3 e 7 dias juntos"}; os números abaixo mudam com o seletor.</p>
     </div>` : ""}
     <div class="cria-sec">
@@ -1716,7 +1719,7 @@ function secao(k, icone, cor, titulo, resumo, corpo){
 const plural = (n, um, varios) => `${n} ${n === 1 ? um : varios}`;
 function resumoCriativos(o){
   const p = o.criativos.periodos["7d"] || o.criativos.periodos["3d"];
-  const ads = p.anuncios || [];
+  const ads = soLista(p.anuncios);
   const t = ads.reduce((s, a) => ({ g:s.g + a.gasto, f:s.f + a.fat }), { g:0, f:0 });
   return `${p.rotulo} · ROAS ${t.g ? dec(t.f / t.g) : "—"} · ${plural(ads.length, "criativo", "criativos")} · atualizado ${quando(o.criativos.atualizadoEm)}`;
 }
@@ -2383,9 +2386,16 @@ function renderTudo(){
     atualizarSync();
     return;
   }
-  if (aba === "inicio") renderInicio();
-  else if (aba === "ofertas") renderGrupos();
-  else renderNotas();
+  try {
+    if (aba === "inicio") renderInicio();
+    else if (aba === "ofertas") renderGrupos();
+    else renderNotas();
+  } catch (e) {
+    // um dado fora do formato não pode deixar a tela em branco
+    console.error(e);
+    const alvo = aba === "inicio" ? $("#view-inicio") : aba === "ofertas" ? $("#grupos") : $("#notas");
+    alvo.innerHTML = `<div class="aviso"><h2>Não consegui montar esta tela</h2><p>Algum dado veio fora do formato. Seus dados estão salvos.</p><p class="diag-nota">${esc(String(e && e.message || e))}</p><button class="btn primary" type="button" data-acao="recarregar">Tentar de novo</button></div>`;
+  }
   atualizarSync();
 }
 
