@@ -1332,6 +1332,11 @@ function deltaHtml(atual, anterior, mesAnt){
 /* ================= criativos ================= */
 /* o dado vem da rotina diária: se algum campo vier fora do formato, a tela não pode cair */
 const soLista = v => Array.isArray(v) ? v : [];
+const rotuloPer = (p, k) => {
+  const r = p && p.rotulo;
+  if (typeof r === "string" && r.trim()) return r.trim();
+  return k === "3d" ? "Últimos 3 dias" : k === "7d" ? "Últimos 7 dias" : "Período recente";
+};
 const emFrases = v => Array.isArray(v) ? v.filter(x => typeof x === "string") : (typeof v === "string" && v.trim() ? [v.trim()] : []);
 let perCria = "7d", criaTodos = false;
 const CLASSE = {
@@ -1359,10 +1364,11 @@ const dataCurta = iso => { const [, m, d] = String(iso || "").split("-"); return
 function melhorCriativo(o){
   const c = o.criativos;
   if (!c || !c.periodos) return null;
-  const p = c.periodos["7d"] || c.periodos["3d"];
+  const k = c.periodos["7d"] ? "7d" : "3d";
+  const p = c.periodos[k];
   if (!p) return null;
   const a = soLista(p.anuncios).filter(x => x.vendas > 0).sort((x, y) => y.lucro - x.lucro)[0];
-  return a ? { a, p } : null;
+  return a ? { a, p, k } : null;
 }
 // Ativas por lucro do mês (maior primeiro); sem números do mês vão para o fim, mais recentes antes.
 function porLucro(lista, mes){
@@ -1392,7 +1398,7 @@ function cardAtiva(o, mes, pos){
         <div><span><i style="--sw:var(--viz-anuncio)"></i>Anúncios</span><b>${esc(brlCurto(l.inv))}</b></div>`
         : `<p class="sem">Sem números ${mes ? "de " + esc(nomeMes(mes)) : "mensais"} — toque para preencher o Mês a mês.</p>`}
       </div>
-      ${top ? `<div class="ac-cria" title="Melhor criativo em ${esc(top.p.rotulo.toLowerCase())}">${ic("trofeu")}<span>Top criativo</span><b>${esc(top.a.nome)}</b><em class="${top.a.roas < 1 ? "neg" : "pos"}">ROAS ${esc(dec(top.a.roas))}</em></div>` : ""}
+      ${top ? `<div class="ac-cria" title="Melhor criativo em ${esc(rotuloPer(top.p, top.k).toLowerCase())}">${ic("trofeu")}<span>Top criativo</span><b>${esc(top.a.nome)}</b><em class="${top.a.roas < 1 ? "neg" : "pos"}">ROAS ${esc(dec(top.a.roas))}</em></div>` : ""}
       <div class="ac-foot">
         ${l && l.inv ? `<span class="roas ${l.fat / l.inv < 1 ? "neg" : ""}">ROAS ${esc(dec(l.fat / l.inv))}</span>` : ""}
         ${l && l.vendas ? `<span>${esc(l.vendas.toLocaleString("pt-BR"))} vendas${mes ? " em " + esc(nomeMes(mes, true)) : ""}</span>` : ""}
@@ -1458,7 +1464,7 @@ function blocoCriativos(o){
   <div class="cria">
     <div class="cria-h">
       ${chaves.length > 1 ? `<div class="seg-mini" role="tablist" aria-label="Período">${chaves.map(k => `<button type="button" role="tab" data-per="${k}" aria-selected="${k === perCria}">${k === "3d" ? "3 dias" : "7 dias"}</button>`).join("")}</div>` : ""}
-    <p class="sub">${esc(p.rotulo)} · ${esc(dataCurta(p.de))}${p.de !== p.ate ? " a " + esc(dataCurta(p.ate)) : ""} · ${esc(c.fonte || "")} · atualizado ${esc(quando(c.atualizadoEm, true))}</p>
+    <p class="sub">${esc(rotuloPer(p, perCria))} · ${esc(dataCurta(p.de))}${p.de !== p.ate ? " a " + esc(dataCurta(p.ate)) : ""} · ${esc(c.fonte || "")} · atualizado ${esc(quando(c.atualizadoEm, true))}</p>
     </div>
     <div class="cria-tiles">
       <div><span>Gasto</span><b>${esc(brl(t.g))}</b></div>
@@ -1718,10 +1724,11 @@ function secao(k, icone, cor, titulo, resumo, corpo){
 }
 const plural = (n, um, varios) => `${n} ${n === 1 ? um : varios}`;
 function resumoCriativos(o){
-  const p = o.criativos.periodos["7d"] || o.criativos.periodos["3d"];
+  const k = o.criativos.periodos["7d"] ? "7d" : "3d";
+  const p = o.criativos.periodos[k] || {};
   const ads = soLista(p.anuncios);
   const t = ads.reduce((s, a) => ({ g:s.g + a.gasto, f:s.f + a.fat }), { g:0, f:0 });
-  return `${p.rotulo} · ROAS ${t.g ? dec(t.f / t.g) : "—"} · ${plural(ads.length, "criativo", "criativos")} · atualizado ${quando(o.criativos.atualizadoEm)}`;
+  return `${rotuloPer(p, k)} · ROAS ${t.g ? dec(t.f / t.g) : "—"} · ${plural(ads.length, "criativo", "criativos")} · atualizado ${quando(o.criativos.atualizadoEm)}`;
 }
 function resumoMensal(o){
   const meses = o.mensal.filter(m => m.mes).sort((a, b) => String(b.mes).localeCompare(String(a.mes)));
